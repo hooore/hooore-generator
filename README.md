@@ -1,1 +1,1 @@
-# hooore-generator
+hooore-generator
