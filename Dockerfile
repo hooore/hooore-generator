@@ -59,4 +59,4 @@ FROM nginx:1.27.0 AS runner
 WORKDIR /app
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=installer /out /var/www/out
+COPY --from=installer /app/out /var/www/out
