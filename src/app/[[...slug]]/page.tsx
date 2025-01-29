@@ -3,11 +3,11 @@ import { getMetaByProjectIdRepo } from "@/actions/project-meta.repository";
 import { getNavbarByProjectIdRepo } from "@/actions/project-navbar.repository";
 import { getProjectByIdRepo } from "@/actions/project.repository";
 import { Toaster } from "@/components/toaster";
+import { PageRenderer } from "@hooore/components/page-renderer";
 import type { Metadata, ResolvingMetadata } from "next";
 import { Inter } from "next/font/google";
 import { redirect } from "next/navigation";
 import Script from "next/script";
-import { Render } from "./render";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -67,7 +67,7 @@ export default async function Page(props: Props) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Render
+        <PageRenderer
           contents={[...navbars, ...pageData]}
           projectLogo={project?.business_logo}
         />
