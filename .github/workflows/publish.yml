@@ -41,7 +41,9 @@ jobs:
 
       - name: Insecure Docker Repository
         run: |
+          cat /etc/docker/daemon.json
           sudo truncate -s-2 /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
           echo ", \"insecure-registries\": [\"${{ secrets.DOCKER_REGISTRY }}\"]}" | sudo tee -a /etc/docker/daemon.json
           sudo systemctl restart docker
 
