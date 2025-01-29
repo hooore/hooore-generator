@@ -39,12 +39,26 @@ jobs:
               http = true
               insecure = true
 
-      - name: Insecure Docker Repository
+      - name: Configure Docker Daemon for insecure registry
         run: |
-          cat /etc/docker/daemon.json
-          sudo truncate -s-2 /etc/docker/daemon.json
-          cat /etc/docker/daemon.json
-          echo ", \"insecure-registries\": [\"${{ secrets.DOCKER_REGISTRY }}\"]}" | sudo tee -a /etc/docker/daemon.json
+          # Ensure /etc/docker exists
+          sudo mkdir -p /etc/docker
+
+          echo /etc/docker/daemon.json
+          # Ensure daemon.json exists
+          if [ ! -f /etc/docker/daemon.json ]; then
+              echo '{}' | sudo tee /etc/docker/daemon.json > /dev/null
+          fi
+          echo /etc/docker/daemon.json
+
+          # Safely append registry (handles both existing & non-existing "insecure-registries")
+          jq '.["insecure-registries"] = (.["insecure-registries"] // []) + ["${{ secrets.DOCKER_REGISTRY }}"] | .["insecure-registries"] |= unique' /etc/docker/daemon.json > /tmp/daemon.json && sudo mv /tmp/daemon.json /etc/docker/daemon.json
+          echo /etc/docker/daemon.json
+
+          # Validate JSON
+          cat /etc/docker/daemon.json | jq .
+
+          # Restart Docker
           sudo systemctl restart docker
 
       - name: Log in to Hooore Docker Hub
