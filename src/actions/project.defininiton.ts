@@ -5,4 +5,7 @@ export type ProjectSchema = {
   business_name: string;
   business_name_slug: string;
   business_logo: string;
+  title: string;
+  description: string;
+  favico: string;
 };

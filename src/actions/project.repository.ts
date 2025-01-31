@@ -8,7 +8,10 @@ export async function getProjectByIdRepo(projectId: string) {
         user_id,
         business_name,
         business_logo,
-        business_name_slug
+        business_name_slug,
+        title,
+        description,
+        favico
     FROM project
     WHERE id = ${projectId}
     `;

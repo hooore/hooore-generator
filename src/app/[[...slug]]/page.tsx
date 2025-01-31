@@ -1,5 +1,4 @@
 import { getPagePathsRepo, getPageRepo } from "@/actions/page";
-import { getMetaByProjectIdRepo } from "@/actions/project-meta.repository";
 import { getNavbarByProjectIdRepo } from "@/actions/project-navbar.repository";
 import { getProjectByIdRepo } from "@/actions/project.repository";
 import { Toaster } from "@/components/toaster";
@@ -20,31 +19,22 @@ export async function generateMetadata(
   __: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const metas = await getMetaByProjectIdRepo(process.env.PROJECT_ID);
-  const metadata = metas.reduce<Metadata>(
-    (metadata, meta) => {
-      if (meta.type === "title") {
-        metadata.title = meta.content;
-      }
+  const project = await getProjectByIdRepo(process.env.PROJECT_ID);
+  if (!project) {
+    return {};
+  }
 
-      if (meta.type === "description") {
-        metadata.description = meta.content;
-      }
-
-      if (meta.type === "favico" && Array.isArray(metadata.icons)) {
-        metadata.icons.push({
-          rel: "icon",
-          type: "image/x-icon",
-          url: meta.content,
-        });
-      }
-
-      return metadata;
-    },
-    { icons: [] }
-  );
-
-  return metadata;
+  return {
+    title: project.title,
+    description: project.description,
+    icons: [
+      {
+        rel: "icon",
+        type: "image/x-icon",
+        url: project.favico,
+      },
+    ],
+  };
 }
 
 export async function generateStaticParams() {
