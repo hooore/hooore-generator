@@ -35,8 +35,13 @@ COPY --from=builder /app/hooore-components ./hooore-components
 COPY --from=builder /app/hooore-packages ./hooore-packages
 COPY --from=builder /app/package.json .
 COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
-
-RUN corepack enable pnpm && pnpm install --frozen-lockfile
+# https://github.com/pnpm/pnpm/issues/9029
+# https://github.com/nodejs/corepack/issues/612
+RUN npm install -g corepack@latest
+# Install pnpm with corepack
+RUN corepack enable
+RUN corepack prepare pnpm --activate
+RUN pnpm install --frozen-lockfile
  
 # Build the project
 COPY --from=builder /app/ .
