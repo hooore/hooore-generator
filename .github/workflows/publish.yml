@@ -19,17 +19,6 @@ jobs:
           ssh-key: ${{ secrets.SSH_KEY }}
           submodules: recursive
 
-      - name: Setup Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-
-      - name: Ping Docker Registry through Tailscale
-        run: |
-          curl ${{ secrets.DOCKER_REGISTRY }}
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
