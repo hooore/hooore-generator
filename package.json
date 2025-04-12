@@ -10,9 +10,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.0",
-    "@hooore/components": "file:hooore-components/packages/components",
-    "@hooore/editor": "file:hooore-components/packages/editor",
-    "@hooore/utils": "file:hooore-packages/packages/utils",
+    "@hooore/components": "workspace:*",
+    "@hooore/editor": "workspace:*",
+    "@hooore/utils": "workspace:*",
     "@radix-ui/react-accordion": "1.2.0",
     "@radix-ui/react-checkbox": "1.1.1",
     "@radix-ui/react-dropdown-menu": "2.1.1",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@iconify/react": "5.0.2",
-    "@hooore/typescript-config": "file:hooore-packages/packages/typescript-config",
+    "@hooore/typescript-config": "workspace:*",
     "typescript": "5",
     "@types/node": "20",
     "@types/react": "19",
@@ -40,5 +40,6 @@
     "postcss": "8",
     "tailwindcss-animate": "1.0.7",
     "tailwindcss": "3.4.1"
-  }
+  },
+  "packageManager": "pnpm@10.5.1+sha512.c424c076bd25c1a5b188c37bb1ca56cc1e136fbf530d98bcb3289982a08fd25527b8c9c4ec113be5e3393c39af04521dd647bcf1d0801eaf8ac6a7b14da313af"
 }
