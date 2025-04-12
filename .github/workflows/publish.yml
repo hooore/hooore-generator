@@ -19,6 +19,48 @@ jobs:
           ssh-key: ${{ secrets.SSH_KEY }}
           submodules: recursive
 
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Ping Docker Registry through Tailscale
+        run: |
+          curl ${{ secrets.DOCKER_REGISTRY }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+          buildkitd-config-inline: |
+            [registry."${{ secrets.DOCKER_REGISTRY }}"]
+              http = true
+              insecure = true
+
+      - name: Configure Docker Daemon for insecure registry
+        run: |
+          # Ensure /etc/docker exists
+          sudo mkdir -p /etc/docker
+
+          # Ensure daemon.json exists
+          if [ ! -f /etc/docker/daemon.json ]; then
+              echo '{}' | sudo tee /etc/docker/daemon.json > /dev/null
+          fi
+
+          # Safely append registry (handles both existing & non-existing "insecure-registries")
+          jq '.["insecure-registries"] = (.["insecure-registries"] // []) + ["${{ secrets.DOCKER_REGISTRY }}"] | .["insecure-registries"] |= unique' /etc/docker/daemon.json > /tmp/daemon.json && sudo mv /tmp/daemon.json /etc/docker/daemon.json
+
+          # Validate JSON
+          cat /etc/docker/daemon.json | jq .
+
+          # Restart Docker
+          sudo systemctl restart docker
+
       - name: Log in to Hooore Docker Hub
         uses: docker/login-action@v3
         with:
