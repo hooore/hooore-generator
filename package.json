@@ -3,8 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run build:packages && npm run build:apps",
+    "build:apps": "next build",
+    "build:dashboard": "pnpm --filter \"dashboard\" run build",
+    "build:packages": "npm run build:utils && npm run build:editor-headless && npm run build:editor && npm run build:components",
+    "build:utils": "pnpm --filter \"@hooore/utils\" run build",
+    "build:components": "pnpm --filter \"@hooore/components\" run build",
+    "build:editor": "pnpm --filter \"@hooore/editor\" run build",
+    "build:editor-headless": "pnpm --filter \"@hooore/editor-headless\" run build",
+    "dev": "concurrently \"npm run dev:packages\" \"npm run dev:apps\"",
+    "dev:apps": "concurrently \"next dev --turbopack\"",
+    "dev:dashboard": "pnpm --filter \"dashboard\" run dev",
+    "dev:packages": "concurrently \"npm run dev:editor\" \"npm run dev:components\"",
+    "dev:components": "pnpm --filter \"@hooore/components\" run dev",
+    "dev:editor": "pnpm --filter \"@hooore/editor\" run dev",
     "start": "next start",
     "lint": "next lint"
   },
@@ -31,15 +43,16 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
-    "@iconify/react": "5.0.2",
     "@hooore/typescript-config": "workspace:*",
-    "typescript": "5",
+    "@iconify/react": "5.0.2",
     "@types/node": "20",
     "@types/react": "19",
     "@types/react-dom": "19",
+    "concurrently": "^9.1.2",
     "postcss": "8",
+    "tailwindcss": "3.4.1",
     "tailwindcss-animate": "1.0.7",
-    "tailwindcss": "3.4.1"
+    "typescript": "5"
   },
   "packageManager": "pnpm@10.5.1+sha512.c424c076bd25c1a5b188c37bb1ca56cc1e136fbf530d98bcb3289982a08fd25527b8c9c4ec113be5e3393c39af04521dd647bcf1d0801eaf8ac6a7b14da313af"
 }

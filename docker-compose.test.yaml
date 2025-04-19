@@ -5,6 +5,11 @@ services:
       dockerfile: Dockerfile.test
       args:
         - APP_DOCKER_BASE_IMAGE=${APP_DOCKER_BASE_IMAGE}
+        - PG_URL=${PG_URL}
+        - PROJECT_ID=${PROJECT_ID}
+        - NEXT_PUBLIC_UMAMI_ID=${NEXT_PUBLIC_UMAMI_ID}
+        - NEXT_PUBLIC_UMAMI_URL=${NEXT_PUBLIC_UMAMI_URL}
+        - NEXT_PUBLIC_ICONIFY_API_URL=${NEXT_PUBLIC_ICONIFY_API_URL}
     env_file:
       - path: ./.env
         required: true
@@ -15,7 +20,6 @@ services:
       - NEXT_PUBLIC_UMAMI_ID=${NEXT_PUBLIC_UMAMI_ID}
       - NEXT_PUBLIC_UMAMI_URL=${NEXT_PUBLIC_UMAMI_URL}
       - NEXT_PUBLIC_ICONIFY_API_URL=${NEXT_PUBLIC_ICONIFY_API_URL}
-      - PORT=${PORT}
     extra_hosts:
       - host.docker.internal:host-gateway
     ports:

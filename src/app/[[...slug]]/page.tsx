@@ -4,11 +4,8 @@ import { getProjectByIdRepo } from "@/actions/project.repository";
 import { Toaster } from "@/components/toaster";
 import { PageRenderer } from "@hooore/components/page-renderer";
 import type { Metadata, ResolvingMetadata } from "next";
-import { Inter } from "next/font/google";
 import { redirect } from "next/navigation";
 import Script from "next/script";
-
-const inter = Inter({ subsets: ["latin"] });
 
 type Props = {
   params: Promise<{ slug: string[] }>;
@@ -55,19 +52,17 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <PageRenderer
-          contents={[...navbars, ...pageData]}
-          projectLogo={project?.business_logo}
-        />
-        <Toaster />
-        <Script
-          defer
-          src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
-          data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID}
-        />
-      </body>
-    </html>
+    <>
+      <PageRenderer
+        contents={[...navbars, ...pageData]}
+        projectLogo={project?.business_logo}
+      />
+      <Toaster />
+      <Script
+        defer
+        src={`${process.env.NEXT_PUBLIC_UMAMI_URL}/script.js`}
+        data-website-id={process.env.NEXT_PUBLIC_UMAMI_ID}
+      />
+    </>
   );
 }
