@@ -6,8 +6,9 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY ./hooore/packages ./hooore/packages
-COPY package.json .
+COPY package.json ./package.json
 COPY pnpm-lock.yaml ./pnpm-lock.yaml
+COPY pnpm-workspace.yaml ./pnpm-workspace.yaml
 
 # https://github.com/pnpm/pnpm/issues/9029
 # https://github.com/nodejs/corepack/issues/612
