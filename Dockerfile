@@ -18,3 +18,5 @@ RUN corepack prepare pnpm --activate
 RUN pnpm install --frozen-lockfile
  
 COPY . .
+
+RUN pnpm run build:packages
